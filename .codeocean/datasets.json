@@ -1,0 +1,9 @@
+{
+	"version": 1,
+	"attached_datasets": [
+		{
+			"id": "5407b641-c893-4285-98d2-b503ad84c8ab",
+			"mount": "dynamic_foraging_raw_data"
+		}
+	]
+}

@@ -1,0 +1,43 @@
+{
+	"version": 1,
+	"base_image": "codeocean/mambaforge3:24.5.0-0-python3.12.4-ubuntu22.04",
+	"post_install": true,
+	"options": {
+		"registry_host_arg": true,
+		"git_ask_pass": true,
+		"mount_secrets": true
+	},
+	"installers": {
+		"apt": {
+			"packages": [
+				{
+					"name": "libgl1",
+					"version": "1.4.0-1"
+				},
+				{
+					"name": "libglib2.0-0",
+					"version": "2.72.4-0ubuntu2.9"
+				},
+				{
+					"name": "libxcb1",
+					"version": "1.14-3ubuntu3"
+				}
+			],
+			"install_software_properties_common": true
+		},
+		"pip": {
+			"packages": [
+				{
+					"name": "log-schema",
+					"version": "0.2.10.dev1"
+				},
+				{
+					"name": "watchtower",
+					"version": "3.4.0"
+				}
+			],
+			"options": {},
+			"pre_install_options": {}
+		}
+	}
+}
