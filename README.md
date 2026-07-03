@@ -27,7 +27,7 @@ Written to `/results`:
 | Path | Description |
 | --- | --- |
 | `quality_control.json` | `aind-data-schema` `QualityControl` combining the raw and processed metrics. |
-| `qc/` | Supporting figures the metrics reference (`side_bias.png`, `lick_intervals.png`). |
+| `dynamic-foraging-qc/` | Supporting figures the metrics reference (`side_bias.png`, `lick_intervals.png`). |
 
 The QC combines:
 
