@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -ex
 
-pip install --no-cache-dir "dynamic-foraging-processing[full] @ git+https://github.com/AllenNeuralDynamics/dynamic-foraging-processing.git@1ab783f3bef1866ba8dd3352ad93a7ba8aa7ccb8"
+pip install --no-cache-dir "dynamic-foraging-processing[full] @ git+https://github.com/AllenNeuralDynamics/dynamic-foraging-processing.git@ad9d1c872d2f0732de8dc4b5189fdfdb3e8b8ad9"
 
 pip install -U --no-cache-dir "boto3"

@@ -4,6 +4,10 @@
 		{
 			"id": "5407b641-c893-4285-98d2-b503ad84c8ab",
 			"mount": "dynamic_foraging_raw_data"
+		},
+		{
+			"id": "bed6f4b7-5b11-4716-8e90-251bf32ab33d",
+			"mount": "dynamic_foraging_nwb_base"
 		}
 	]
 }
