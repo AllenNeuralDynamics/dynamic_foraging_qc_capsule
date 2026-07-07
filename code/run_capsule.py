@@ -6,6 +6,7 @@ from pathlib import Path
 
 from dynamic_foraging_processing.pipeline import Pipeline
 from dynamic_foraging_processing.raw_data_loader import RawDataLoader
+from hdmf_zarr import NWBZarrIO
 from log_schema import setup_logging
 from pydantic import Field
 from pydantic_settings import BaseSettings
@@ -14,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 class InputSettings(BaseSettings, cli_parse_args=True):
     """
-    Settings for VR Foraging Primary Data NWB Packaging
+    Settings for QC
     """
 
     input_directory: Path = Field(
@@ -32,16 +33,12 @@ def run() -> None:
     logging.basicConfig(
         level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
     )
-    raw_data_path = tuple(settings.input_directory.glob("*"))
+    raw_data_path = tuple(settings.input_directory.glob("dynamic_foraging_raw_data"))
     if not raw_data_path:
         raise FileNotFoundError(
-            "No data asset attached"
+            "No raw data asset attached"
         )
     
-    if len(raw_data_path) > 1:
-        raise ValueError(
-            "Multiple data assets attached"
-        )
     raw_data_path = raw_data_path[0]
     data_description_path = raw_data_path / "data_description.json"
     if not data_description_path.exists():
@@ -50,6 +47,16 @@ def run() -> None:
         )
     with open(data_description_path, "r") as f:
         data_description = json.load(f)
+
+    nwb_path = tuple(settings.input_directory.glob("dynamic_foraging_nwb_base"))
+    if not nwb_path:
+        raise FileNotFoundError(
+            "No nwb found to run qc"
+        )
+
+    nwb_file_path = nwb_path[0] / "behavior.nwb.zarr"
+    with NWBZarrIO(nwb_file_path, "r") as io:
+        nwb = io.read()
 
     acquisition_name = data_description["name"]
     process_name = os.getenv("PROCESS_NAME", "dynamic-foraging-qc")
@@ -71,7 +78,8 @@ def run() -> None:
     )
     raw_data_loader = RawDataLoader(raw_data_path)
     pipeline_runner = Pipeline(raw_data_loader)
-    pipeline_runner.run_qc(
+    pipeline_runner.run_qc_from_nwb(
+        nwb,
         settings.output_directory,
         folder_directory="dynamic-foraging-qc"
     )
