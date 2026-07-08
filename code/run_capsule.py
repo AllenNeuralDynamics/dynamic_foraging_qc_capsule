@@ -11,7 +11,6 @@ from log_schema import setup_logging
 from pydantic import Field
 from pydantic_settings import BaseSettings
 
-logger = logging.getLogger(__name__)
 
 class InputSettings(BaseSettings, cli_parse_args=True):
     """
@@ -30,9 +29,6 @@ def run() -> None:
     Entrypoint for executing
     """
     settings = InputSettings()
-    logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-    )
     raw_data_path = tuple(settings.input_directory.glob("dynamic_foraging_raw_data"))
     if not raw_data_path:
         raise FileNotFoundError(
@@ -70,26 +66,26 @@ def run() -> None:
         },
     )
 
-    logger.info("Begin QC ...", extra={"event_type": "stage_start"})
+    logging.info("Begin QC ...", extra={"event_type": "stage_start"})
 
-    logger.info(
+    logging.info(
         f"Found session {data_description["name"]}. "
         "Running QC"
     )
     raw_data_loader = RawDataLoader(raw_data_path)
     pipeline_runner = Pipeline(raw_data_loader)
-    pipeline_runner.run_qc_from_nwb(
+    pipeline_runner.run_qc(
         nwb,
         settings.output_directory,
         folder_directory="dynamic-foraging-qc"
     )
-    logger.info(
+    logging.info(
         "Finished QC. Written to results"
     )
-    logger.info("Pipeline stage completed", extra={"event_type": "stage_complete"})
+    logging.info("Pipeline stage completed", extra={"event_type": "stage_complete"})
 
 if __name__ == "__main__":
     try:
         run()
     except Exception as e:
-        logger.exception("Pipeline stage failed", extra={"event_type": "stage_error"})
+        logging.exception("Pipeline stage failed", extra={"event_type": "stage_error"})
