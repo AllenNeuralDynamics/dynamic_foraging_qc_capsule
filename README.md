@@ -1,6 +1,6 @@
 # Dynamic Foraging — QC Capsule
 
-Runs quality control for a [dynamic foraging]([https://github.com/AllenNeuralDynamics/dynamic-foraging-task](https://github.com/AllenNeuralDynamics/Aind.Behavior.DynamicForaging))
+Runs quality control for a [dynamic foraging](https://github.com/AllenNeuralDynamics/Aind.Behavior.DynamicForaging)
 session. The capsule runs the raw (contract QA) stage over the raw acquisition and
 the processed (behavior) stage over the packaged NWB file, then writes a combined
 `aind-data-schema` `quality_control.json` plus the supporting figures.
@@ -8,6 +8,7 @@ the processed (behavior) stage over the packaged NWB file, then writes a combine
 > **Note:** Data must be acquired in the `aind-behavior-dynamic-foraging` data
 > contract format to be compatible with this capsule.
 
+Uses functions from the dynamic foraging processing [library](https://github.com/AllenNeuralDynamics/dynamic-foraging-processing)
 ## Input
 Two assets are mounted under `/data` — **both are required**:
 
