@@ -28,6 +28,8 @@ def run() -> None:
     """
     Entrypoint for executing
     """
+
+    ### Look for raw data asset attached. Will be mounted at following name
     settings = InputSettings()
     raw_data_path = tuple(settings.input_directory.glob("dynamic_foraging_raw_data"))
     if not raw_data_path:
@@ -36,6 +38,8 @@ def run() -> None:
         )
     
     raw_data_path = raw_data_path[0]
+
+    # Grab the data description json file
     data_description_path = raw_data_path / "data_description.json"
     if not data_description_path.exists():
         raise FileNotFoundError(
@@ -44,16 +48,19 @@ def run() -> None:
     with open(data_description_path, "r") as f:
         data_description = json.load(f)
 
+    ### Look for nwb file coming in as input. Will be mounted at following name
     nwb_path = tuple(settings.input_directory.glob("dynamic_foraging_nwb_base"))
     if not nwb_path:
         raise FileNotFoundError(
             "No nwb found to run qc"
         )
 
+    # Read nwb
     nwb_file_path = nwb_path[0] / "behavior.nwb.zarr"
     with NWBZarrIO(nwb_file_path, "r") as io:
         nwb = io.read()
-
+    
+    ### Setup logging
     acquisition_name = data_description["name"]
     process_name = os.getenv("PROCESS_NAME", "dynamic-foraging-qc")
     pipeline_name = os.getenv("PIPELINE_NAME", "")
@@ -72,6 +79,8 @@ def run() -> None:
         f"Found session {data_description["name"]}. "
         "Running QC"
     )
+
+    ### Run QC
     raw_data_loader = RawDataLoader(raw_data_path)
     pipeline_runner = Pipeline(raw_data_loader)
     pipeline_runner.run_qc(
