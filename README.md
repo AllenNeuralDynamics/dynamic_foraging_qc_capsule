@@ -1,9 +1,9 @@
 # Dynamic Foraging — QC Capsule
 
 Runs quality control for a [dynamic foraging](https://github.com/AllenNeuralDynamics/Aind.Behavior.DynamicForaging)
-session. The capsule runs the raw (contract QA) stage over the raw acquisition and
-the processed (behavior) stage over the packaged NWB file, then writes a combined
-`aind-data-schema` `quality_control.json` plus the supporting figures.
+session. The capsule runs the raw (contract QC) stage over the raw acquisition and
+the processed (behavior) stage over the trials, licks, and rewards data packaged in the NWB file. The output is a combined
+`aind-data-schema` `quality_control.json` plus the supporting reference media.
 
 > **Note:** Data must be acquired in the `aind-behavior-dynamic-foraging` data
 > contract format to be compatible with this capsule.
@@ -13,10 +13,8 @@ Uses functions from the dynamic foraging processing [library](https://github.com
 Two assets are mounted under `/data` — **both are required**:
 
 - **The raw acquisition directory** (data-contract format: Harp registers, software
-  events, ...) — the raw contract-QA stage runs over this via `RawDataLoader`.
-- **The NWB file** (`behavior.nwb.zarr`) produced by the NWB capsule — the trials
-  table and lick times for the processed (behavior) QC stage are read from it. The
-  NWB file is passed in to the QC run (it is **not** rebuilt here).
+  events, ...) — the raw stage QC's the data contract on the `RawDataLoader` object.
+- **The NWB file** (`behavior.nwb.zarr`) produced by the [NWB packaging capsule](https://github.com/AllenNeuralDynamics/dynamic_foraging_nwb_packaging_capsule) — the trials table is extracted from the NWB file as a `pandas.DataFrame` and the lick/reward times are extarcted as `numpy arrays` and are QC'd and added to the processed QC stage. 
 
 ```
 /data/
@@ -36,7 +34,7 @@ Written to `/results`:
 
 The QC combines:
 
-- **Raw (contract QA)** — Harp devices, cameras, CSV streams, the data contract,
+- **Raw (contract QC)** — Harp devices, cameras, CSV streams, the data contract,
   and task-specific checks (run over the raw acquisition).
 - **Processed (behavior)** — side bias and lick-interval metrics computed from the
   NWB `trials` table and lick times.
