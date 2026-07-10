@@ -1,0 +1,13 @@
+{
+	"version": 1,
+	"attached_datasets": [
+		{
+			"id": "4871fdf3-b027-4bd3-8311-93d284b01730",
+			"mount": "dynamic_foraging_raw_data"
+		},
+		{
+			"id": "7a3aa2d5-0245-44fd-8aae-990a0add83d1",
+			"mount": "dynamic_foraging_nwb_base"
+		}
+	]
+}
