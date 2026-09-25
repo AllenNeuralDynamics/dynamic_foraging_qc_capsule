@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -ex
 
-pip install --no-cache-dir "dynamic-foraging-processing[full] @ git+https://github.com/AllenNeuralDynamics/dynamic-foraging-processing.git@v0.4.2"
+pip install --no-cache-dir "dynamic-foraging-processing[full] @ git+https://github.com/AllenNeuralDynamics/dynamic-foraging-processing.git@v0.5.0"
+
+pip install --no-cache-dir "hdmf-zarr<0.14.0"
 
 pip install -U --no-cache-dir "boto3"
